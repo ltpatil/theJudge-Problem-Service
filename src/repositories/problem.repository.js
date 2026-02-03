@@ -5,7 +5,9 @@ class ProblemRepository{
             const problem = await Problem.create({
                 title : problemData.title,
                 description : problemData.description,
-                testcases : (problemData.testcases) ? problemData.testcases : []
+                testCases : (problemData.testCases) ? problemData.testCases : [],
+                difficulty : problemData.difficulty,
+                editorial : problemData.editorial
             });
             return problem;
         } catch (error) {

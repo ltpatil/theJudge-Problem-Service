@@ -8,7 +8,7 @@ class ProblemService {
     }
     async createProblem (problemData){
         try {
-            console.log(problemData);
+            // console.log(problemData);
             problemData.desciption = sanitizedMarkdownConv(problemData.description);
             const problem = await this.problemRepository.createProblem(problemData);
             return problem;
