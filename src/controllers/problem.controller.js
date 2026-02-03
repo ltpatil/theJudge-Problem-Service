@@ -18,17 +18,29 @@ async function addProblem(req,res,next){
     })
 }
 
-function getProblem(req,res,next){
+async function getProblem(req,res,next){
     try {
-        throw new UnImplemented('getProblem');
+        const problem = await problemService.getProblem(req.params.id);
+        return res.status(StatusCodes.OK).json({
+        sucess : true,
+        message : `Found the problem corresponding to ID`,
+        error : {},
+        data : problem
+    })
     } catch (error) {
         next(error);
     }
 }
 
-function getProblems(req,res,next){
+async function getProblems(req,res,next){
     try {
-        throw new UnImplemented('getProblems');
+        const allproblems = await problemService.getallProblems();
+        return res.status(StatusCodes.OK).json({
+        sucess : true,
+        message : `Found all the problems successfully`,
+        error : {},
+        data : allproblems
+    })
     } catch (error) {
         next(error);
     }
