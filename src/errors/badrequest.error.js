@@ -6,4 +6,5 @@ class BadRequest extends BaseError{
     }
 }
 
+
 module.exports = BadRequest;

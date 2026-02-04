@@ -1,9 +1,10 @@
-const UnImplemented = require('../errors/unimplemented.error');
+const {UnImplemented, ProblemNotFound} = require('../errors');
 const {ProblemService} = require('../services');
 const {ProblemRepository} = require('../repositories');
 const { StatusCodes } = require('http-status-codes');
 
 const problemService = new ProblemService(new ProblemRepository ());
+
 function pingPC(req,res){
     return res.json({message : 'Problem Controller is UP'});
 }
@@ -23,10 +24,10 @@ async function getProblem(req,res,next){
         const problem = await problemService.getProblem(req.params.id);
         return res.status(StatusCodes.OK).json({
         sucess : true,
-        message : `Found the problem corresponding to ID`,
+        message : `Found the problem corresponding to ID : ${req.params.id}`,
         error : {},
         data : problem
-    })
+        })
     } catch (error) {
         next(error);
     }
@@ -40,23 +41,35 @@ async function getProblems(req,res,next){
         message : `Found all the problems successfully`,
         error : {},
         data : allproblems
-    })
+        })
     } catch (error) {
         next(error);
     }
 }
 
-function deleteProblem(req,res,next){
+async function deleteProblem(req,res,next){
     try {
-        throw new UnImplemented('deleteProblem');
+        const deletedProblem = await problemService.deleteProblem(req.params.id);
+        return res.status(StatusCodes.OK).json({
+        sucess : true,
+        message : `Deleted the problem corresponding to ID : ${req.params.id}`,
+        error : {},
+        data : deletedProblem
+        })
     } catch (error) {
         next(error);
     }
 }
 
-function updateProblem(req,res,next){
+async function updateProblem(req,res,next){
     try {
-        throw new UnImplemented('updateProblem');
+        const updatedProblem = await problemService.updateProblem(req.params.id,req.body);
+        return res.status(StatusCodes.OK).json({
+        sucess : true,
+        message : `Updated the problem corresponding to ID : ${req.params.id}`,
+        error : {},
+        data : updatedProblem
+        })
     } catch (error) {
         next(error);
     }

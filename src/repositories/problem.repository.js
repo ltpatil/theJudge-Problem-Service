@@ -1,4 +1,5 @@
 const {Problem} = require('../models');
+const {UnImplemented, ProblemNotFound} = require('../errors');
 class ProblemRepository{
     async createProblem(problemData){
         try {
@@ -23,7 +24,29 @@ class ProblemRepository{
 
     async getProblem(id){
         const problem = await Problem.findById(id);
+        if(!problem){
+            throw new ProblemNotFound(id);
+        }  
         return problem;
+    }
+
+    async deleteProblem(id){
+        const deletedProblem = await Problem.findByIdAndDelete(id);
+        if(!deletedProblem){
+            throw new ProblemNotFound(id)
+        } 
+        return deletedProblem;
+    }
+    async updateProblem(id, problemData){
+        const updatedProblem = await Problem.findByIdAndUpdate(
+            id,
+            problemData,
+           { new : true, runValidators : true} 
+        );
+        if(!updatedProblem){
+            throw new ProblemNotFound(id)
+        }
+        return updatedProblem;
     }
 }
 
