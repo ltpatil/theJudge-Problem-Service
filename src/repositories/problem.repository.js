@@ -1,8 +1,8 @@
 const {Problem} = require('../models');
+const logger = require('../config/logger.config')
 const {UnImplemented, ProblemNotFound} = require('../errors');
 class ProblemRepository{
     async createProblem(problemData){
-        try {
             const problem = await Problem.create({
                 title : problemData.title,
                 description : problemData.description,
@@ -11,10 +11,7 @@ class ProblemRepository{
                 editorial : problemData.editorial
             });
             return problem;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
+        
     }
 
     async getallProblems(){
@@ -25,6 +22,7 @@ class ProblemRepository{
     async getProblem(id){
         const problem = await Problem.findById(id);
         if(!problem){
+            logger.error(`Problem Repository : Problem with id ${id} not found!`)
             throw new ProblemNotFound(id);
         }  
         return problem;
@@ -33,6 +31,7 @@ class ProblemRepository{
     async deleteProblem(id){
         const deletedProblem = await Problem.findByIdAndDelete(id);
         if(!deletedProblem){
+            logger.error(`Problem Repository : Problem with id ${id} not found!`)
             throw new ProblemNotFound(id)
         } 
         return deletedProblem;
@@ -44,6 +43,7 @@ class ProblemRepository{
            { new : true, runValidators : true} 
         );
         if(!updatedProblem){
+            logger.error(`Problem Repository : Problem with id ${id} not found!`)
             throw new ProblemNotFound(id)
         }
         return updatedProblem;

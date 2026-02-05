@@ -10,13 +10,17 @@ function pingPC(req,res){
 }
 
 async function addProblem(req,res,next){
-    const newProblem = await problemService.createProblem(req.body);
-    return res.status(StatusCodes.CREATED).json({
-        sucess : true,
-        message : `Problem has been created successfully`,
-        error : {},
-        data : newProblem 
-    })
+    try {
+        const newProblem = await problemService.createProblem(req.body);
+        return res.status(StatusCodes.CREATED).json({
+            sucess : true,
+            message : `Problem has been created successfully`,
+            error : {},
+            data : newProblem 
+        })
+    } catch (error) {
+        next(error);
+    }
 }
 
 async function getProblem(req,res,next){
